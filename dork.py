@@ -1,3 +1,8 @@
+# TODO:
+# - change output form stdio to a file
+# - impliment tor
+
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse
@@ -19,9 +24,7 @@ token = "+-"
 exclude = ""
 query = f"https://www.google.com/search?q={primary_domain}{exclude}"
 
-
 # Main Loop-----------------------------------------------------------
-
 
 while subdomains_found:
     print(f"Query: {query}")
@@ -46,12 +49,6 @@ while subdomains_found:
         subdomains_found = False
         break
 
-    for domain in subdomains:
-        print(domain)
-
-    # for domain in excluded_subdomains:
-    #     print(domain)
-
     if excluded_subdomains:
         exclude = token + token.join(excluded_subdomains)
         query = f"https://www.google.com/search?q={primary_domain}{exclude}"
@@ -61,6 +58,10 @@ while subdomains_found:
 
     previous_subdomains = subdomains.copy()
 
+with open("domains.txt", "w") as found_subdomains:
+    for domain in sorted(subdomains):
+        found_subdomains.write(domain + "\n")
+        print(domain)
 
 input("Press any key to exit...")
 
